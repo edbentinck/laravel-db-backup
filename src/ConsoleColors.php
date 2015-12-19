@@ -1,9 +1,11 @@
-<?php namespace Coreproc\LaravelDbBackup;
+<?php
+
+namespace Coreproc\LaravelDbBackup;
 
 class ConsoleColors
 {
-    private $foreground_colors = array();
-    private $background_colors = array();
+    private $foreground_colors = [];
+    private $background_colors = [];
 
     public function __construct()
     {
@@ -67,5 +69,3 @@ class ConsoleColors
         return array_keys($this->background_colors);
     }
 }
-
-?>

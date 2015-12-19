@@ -1,4 +1,6 @@
-<?php namespace Coreproc\LaravelDbBackup\Commands;
+<?php
+
+namespace Coreproc\LaravelDbBackup\Commands;
 
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
@@ -20,7 +22,7 @@ class BackupCommand extends BaseCommand
 
         $databaseOption = $this->option('database');
 
-        if ( ! empty($databaseOption)) {
+        if (! empty($databaseOption)) {
             $databaseDriver = $databaseOption;
         }
 
@@ -90,11 +92,12 @@ class BackupCommand extends BaseCommand
                 }
             }
 
-            if ( ! empty($dbConnectionConfig['slackWebhookPath'])) {
+            if (! empty($dbConnectionConfig['slackWebhookPath'])) {
                 $disableSlackOption = $this->option('disable-slack');
-                if ( ! $disableSlackOption) $this->notifySlack($dbConnectionConfig);
+                if (! $disableSlackOption) {
+                    $this->notifySlack($dbConnectionConfig);
+                }
             }
-
         } else {
             // todo
             $this->line(sprintf($this->colors->getColoredString("\n" . 'Database backup failed. %s' . "\n", 'red'), $status));
@@ -108,29 +111,29 @@ class BackupCommand extends BaseCommand
      */
     protected function getArguments()
     {
-        return array(
-            array('filename', InputArgument::OPTIONAL, 'Filename or -path for the dump.'),
-        );
+        return [
+            ['filename', InputArgument::OPTIONAL, 'Filename or -path for the dump.'],
+        ];
     }
 
     protected function getOptions()
     {
-        return array(
-            array('database', null, InputOption::VALUE_REQUIRED, 'The database connection to backup'),
-            array('upload-s3', 'u', InputOption::VALUE_OPTIONAL, 'Upload the dump to your S3 bucket'),
-            array('path-s3', null, InputOption::VALUE_OPTIONAL, 'The folder in which to save the backup'),
-            array('data-retention-s3', null, InputOption::VALUE_OPTIONAL, 'Number of days to retain backups'),
-            array('disable-slack', null, InputOption::VALUE_NONE, 'Number of days to retain backups'),
-            array('archive', null, InputOption::VALUE_OPTIONAL, 'Create zip archive'),
-            array('s3-only', null, InputOption::VALUE_OPTIONAL, 'Delete local archive after S3 upload'),
-        );
+        return [
+            ['database', null, InputOption::VALUE_REQUIRED, 'The database connection to backup'],
+            ['upload-s3', 'u', InputOption::VALUE_OPTIONAL, 'Upload the dump to your S3 bucket'],
+            ['path-s3', null, InputOption::VALUE_OPTIONAL, 'The folder in which to save the backup'],
+            ['data-retention-s3', null, InputOption::VALUE_OPTIONAL, 'Number of days to retain backups'],
+            ['disable-slack', null, InputOption::VALUE_NONE, 'Number of days to retain backups'],
+            ['archive', null, InputOption::VALUE_OPTIONAL, 'Create zip archive'],
+            ['s3-only', null, InputOption::VALUE_OPTIONAL, 'Delete local archive after S3 upload'],
+        ];
     }
 
     protected function checkDumpFolder()
     {
         $dumpsPath = $this->getDumpsPath();
 
-        if ( ! is_dir($dumpsPath)) {
+        if (! is_dir($dumpsPath)) {
             mkdir($dumpsPath);
         }
     }
@@ -140,11 +143,11 @@ class BackupCommand extends BaseCommand
         $bucket = $this->option('upload-s3');
         $s3 = AWS::get('s3');
 
-        $s3->putObject(array(
+        $s3->putObject([
             'Bucket'     => $bucket,
             'Key'        => $this->getS3DumpsPath() . '/' . $this->fileName,
             'SourceFile' => $this->filePath,
-        ));
+        ]);
     }
 
     protected function getS3DumpsPath()
@@ -160,7 +163,7 @@ class BackupCommand extends BaseCommand
 
     private function dataRetentionS3()
     {
-        if ( ! $this->option('data-retention-s3')) {
+        if (! $this->option('data-retention-s3')) {
             return;
         }
 
@@ -174,10 +177,10 @@ class BackupCommand extends BaseCommand
         $bucket = $this->option('upload-s3');
         $s3 = AWS::get('s3');
 
-        $list = $s3->listObjects(array(
+        $list = $s3->listObjects([
             'Bucket' => $bucket,
             'Marker' => $this->getS3DumpsPath(),
-        ));
+        ]);
 
         $timestampForRetention = strtotime('-' . $dataRetention . ' days');
         $this->info('Retaining data where date is greater than ' . date('Y-m-d', $timestampForRetention));
@@ -195,11 +198,12 @@ class BackupCommand extends BaseCommand
 
             if ($timestampForRetention > $fileTimestamp) {
                 $this->info("The following file is beyond data retention and was deleted: {$fileArray['Key']}");
-                // delete
-                $s3->deleteObject(array(
+                
+                $s3->deleteObject([
                     'Bucket' => $bucket,
                     'Key'    => $fileArray['Key']
-                ));
+                ]);
+
                 $deleteCount++;
             }
         }
@@ -225,5 +229,4 @@ class BackupCommand extends BaseCommand
         shell_exec($command);
         $this->info('Slack notification sent!');
     }
-
 }

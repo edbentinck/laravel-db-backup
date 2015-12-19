@@ -1,4 +1,6 @@
-<?php namespace Coreproc\LaravelDbBackup;
+<?php
+
+namespace Coreproc\LaravelDbBackup;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -19,7 +21,7 @@ class LaravelDbBackupServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->package('coreproc/laravel-db-backup',null, __DIR__);
+        $this->package('coreproc/laravel-db-backup', null, __DIR__);
 
         $this->app->register('Aws\Laravel\AwsServiceProvider');
 
@@ -57,7 +59,6 @@ class LaravelDbBackupServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return array();
+        return [];
     }
-
 }

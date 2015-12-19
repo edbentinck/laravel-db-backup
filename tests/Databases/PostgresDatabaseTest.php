@@ -59,5 +59,4 @@ class PostgresDatabaseTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($this->database->restore('testfile.dump'));
     }
-
 }

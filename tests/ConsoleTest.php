@@ -21,5 +21,4 @@ class ConsoleTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertTrue($this->console->run('false') !== true);
     }
-
 }

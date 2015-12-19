@@ -1,4 +1,6 @@
-<?php namespace Coreproc\LaravelDbBackup\Commands;
+<?php
+
+namespace Coreproc\LaravelDbBackup\Commands;
 
 use Illuminate\Console\Command;
 use Config;
@@ -30,5 +32,4 @@ class BaseCommand extends Command
     {
         return Config::get('laravel-db-backup::path');
     }
-
 }

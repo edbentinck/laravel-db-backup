@@ -32,9 +32,9 @@ class RestoreCommandTest extends TestCase
 
     protected function getPackageProviders()
     {
-        return array(
+        return [
             'Coreproc\LaravelDbBackup\LaravelDbBackupServiceProvider',
-        );
+        ];
     }
 
     public function testSuccessfulRestore()
@@ -46,9 +46,9 @@ class RestoreCommandTest extends TestCase
                            ->once()
                            ->andReturn(true);
 
-        $this->tester->execute(array(
+        $this->tester->execute([
             'dump' => 'testDump.sql'
-            ));
+        ]);
 
         $this->assertRegExp("/^(\\033\[[0-9;]*m)*(\\n)*testDump.sql was successfully restored.(\\n)*(\\033\[0m)*$/", $this->tester->getDisplay());
     }
@@ -62,9 +62,9 @@ class RestoreCommandTest extends TestCase
                            ->once()
                            ->andReturn(false);
 
-        $this->tester->execute(array(
+        $this->tester->execute([
             'dump' => 'testDump.sql'
-            ));
+        ]);
 
         $this->assertRegExp("/^(\\033\[[0-9;]*m)*(\\n)*Database restore failed.(\\n)*(\\033\[0m)*$/", $this->tester->getDisplay());
     }
@@ -73,7 +73,7 @@ class RestoreCommandTest extends TestCase
     {
         $this->app->config->set('database.backup.path', __DIR__ . '/resources/EmptyFolder');
 
-        $this->tester->execute(array());
+        $this->tester->execute([]);
 
         $this->assertRegExp("/^(\\033\[[0-9;]*m)*(\\n)*You haven't saved any dumps.(\\n)*(\\033\[0m)*$/", $this->tester->getDisplay());
     }
@@ -82,7 +82,7 @@ class RestoreCommandTest extends TestCase
     {
         $this->app->config->set('database.backup.path', __DIR__ . '/resources/NonEmptyFolder');
 
-        $this->tester->execute(array());
+        $this->tester->execute([]);
         //@TODO: Need to find the good regex
         //$this->assertRegExp("/^(\\033\[[0-9;]*m)*(\\n)*Please select one of the following dumps:(\\n)*(\\033\[0m)*(\\033\[[0-9;]*m)*(\\n)*hello.sql(\\n)*(\\033\[0m)*(\\033\[[0-9;]*m)*(\\n)*world.sql(\\n)*(\\033\[0m)*$/", $this->tester->getDisplay());
     }

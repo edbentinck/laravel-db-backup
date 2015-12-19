@@ -1,16 +1,16 @@
 <?php
 
-return array(
+return [
 
     'path'  => storage_path() . '/dumps/',
 
-    'mysql' => array(
+    'mysql' => [
         'dump_command_path'    => '',
         'restore_command_path' => '',
-    ),
+    ],
 
-    's3'    => array(
+    's3'    => [
         'path' => ''
-    ),
+    ],
 
-);
+];
