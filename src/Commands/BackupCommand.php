@@ -6,13 +6,13 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use AWS;
 use Config;
-use Guzzle\Http;
+use GuzzleHttp;
 
 class BackupCommand extends BaseCommand
 {
 
     protected $name = 'db:backup';
-    protected $description = 'Backup the default database to `app/storage/dumps`';
+    protected $description = 'Backup the default database to `storage/dumps`';
     protected $filePath;
     protected $fileName;
 

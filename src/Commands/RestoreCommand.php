@@ -11,7 +11,7 @@ class RestoreCommand extends BaseCommand
 {
     protected $name = 'db:restore';
 
-    protected $description = 'Restore a dump from `app/storage/dumps`';
+    protected $description = 'Restore a dump from `storage/dumps`';
 
     protected $database;
 
