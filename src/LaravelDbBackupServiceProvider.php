@@ -21,6 +21,8 @@ class LaravelDbBackupServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->mergeConfigFrom(__DIR__.'/config/config.php', 'laravel-db-backup'); 
+
         $this->app->register('Aws\Laravel\AwsServiceProvider');
 
         $loader = \Illuminate\Foundation\AliasLoader::getInstance();

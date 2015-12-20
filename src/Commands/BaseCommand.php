@@ -22,14 +22,14 @@ class BaseCommand extends Command
 
     public function getDatabase($databaseDriver)
     {
-        //$database   = $database ?: Config::get('database.default');
-        $realConfig = Config::get('database.connections.' . $databaseDriver);
+        //$database   = $database ?: config('database.default');
+        $realConfig = config('database.connections.' . $databaseDriver);
 
         return $this->databaseBuilder->getDatabase($realConfig);
     }
 
     protected function getDumpsPath()
     {
-        return Config::get('laravel-db-backup::path');
+        return config('laravel-db-backup.path');
     }
 }

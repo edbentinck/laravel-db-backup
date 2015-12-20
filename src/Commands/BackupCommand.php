@@ -18,7 +18,7 @@ class BackupCommand extends BaseCommand
 
     public function fire()
     {
-        $databaseDriver = Config::get('database.default', false);
+        $databaseDriver = config('database.default', false);
 
         $databaseOption = $this->option('database');
 
@@ -27,7 +27,7 @@ class BackupCommand extends BaseCommand
         }
 
         $database = $this->getDatabase($databaseDriver);
-        $dbConnectionConfig = Config::get('database.connections.' . $databaseDriver);
+        $dbConnectionConfig = config('database.connections.' . $databaseDriver);
 
         $this->checkDumpFolder();
 
@@ -155,7 +155,7 @@ class BackupCommand extends BaseCommand
         if ($this->option('path-s3')) {
             $path = $this->option('path-s3');
         } else {
-            $path = Config::get('laravel-db-backup::s3.path', 'databases');
+            $path = config('laravel-db-backup::s3.path', 'databases');
         }
 
         return $path;

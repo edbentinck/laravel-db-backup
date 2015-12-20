@@ -18,7 +18,7 @@ class RestoreCommand extends BaseCommand
     public function fire()
     {
         //get default db driver from config unless we provide other db driver from cli command
-        $this->database = $this->getDatabase(Config::get('database.default'));
+        $this->database = $this->getDatabase(config('database.default'));
 
         $databaseOption = $this->input->getOption('database');
 
